@@ -43,11 +43,12 @@ st.markdown("""
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     .insight-box {
-        background-color: #FEF3C7;
+        background-color: #EFF6FF;
         padding: 15px;
         border-radius: 8px;
         margin: 10px 0;
-        border-left: 4px solid #F59E0B;
+        border-left: 4px solid #2563EB;
+        color: #1E3A8A;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -729,6 +730,7 @@ if df is not None:
                 numeric_cols[:-1],
                 index=1
             )
+
         
         fig = px.scatter(
             df_processed.sample(min(5000, len(df_processed))),
@@ -860,60 +862,20 @@ if df is not None:
         # Summary statistics table
         st.subheader("📋 Summary Statistics")
         
+        # Define numeric columns for summary statistics
+        numeric_cols = ['time_in_hospital', 'num_lab_procedures', 'num_procedures',
+                       'num_medications', 'number_outpatient', 'number_emergency',
+                       'number_inpatient', 'number_diagnoses', 'readmitted_30days']
+        
         summary_stats = df_processed[numeric_cols].describe().round(2)
         st.dataframe(summary_stats, use_container_width=True)
         
-        # Export functionality
-        st.subheader("📥 Export Analysis Results")
         
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            if st.button("Generate Summary Report"):
-                report = f"""
-                Healthcare Readmission Analysis Summary
-                ========================================
-                Generated: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S')}
-                
-                Dataset Overview:
-                - Total Encounters: {len(df_processed):,}
-                - Data Period: 1999-2008 (10 years)
-                - Number of Hospitals: 130
-                
-                Key Metrics:
-                - 30-Day Readmission Rate: {readmission_rate_30:.2f}%
-                - Average Length of Stay: {avg_los:.1f} days
-                - Average Medications: {avg_meds:.1f}
-                - Diabetes Medication Rate: {diabetes_med_rate:.1f}%
-                
-                Top Risk Factors:
-                1. Number of inpatient visits
-                2. Number of emergency visits
-                3. Number of diagnoses
-                4. Length of stay
-                5. Number of medications
-                """
-                st.text_area("Summary Report", report, height=400)
-        
-        with col2:
-            st.info("""
-            📌 **Next Steps for Analysis:**
-            1. Perform feature engineering for predictive modeling
-            2. Build classification models for readmission prediction
-            3. Conduct statistical hypothesis testing
-            4. Develop risk stratification framework
-            5. Create predictive dashboards for clinical use
-            """)
-
-else:
-    st.error("Unable to load data. Please check your internet connection and try again.")
-    st.stop()
-
 # Footer
 st.markdown("---")
 st.markdown("""
 <div style='text-align: center; color: #6B7280; padding: 20px;'>
-    <p>IT5006 - Healthcare Readmission Analysis Dashboard | Team Project Milestone 1</p>
-    <p>Built with Streamlit 🎈 | Data Source: UCI ML Repository (ID: 296)</p>
+    <p>IT5006 - Healthcare Readmission Analysis Dashboard | Team 2 Project Milestone 1</p>
+    <p>Data Source: UCI ML Repository (ID: 296)</p>
 </div>
 """, unsafe_allow_html=True)
